@@ -3,432 +3,1013 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💕</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Тоғжан Алтынбек — Маркетолог</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --blush: #f9c6d0;
-    --rose: #e8829a;
-    --deep: #c0446a;
-    --petal: #fde8ed;
-    --cream: #fff5f7;
-    --text: #7a2040;
+/* ── RESET & TOKENS ─────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#FDFBF9;
+  --blush:#FBF0F0;
+  --rose:#F3D5D5;
+  --petal:#E8B8B8;
+  --dusty:#CB8A96;
+  --deep:#A84E62;
+  --ink:#241318;
+  --muted:#8C6B74;
+  --border:rgba(168,78,98,.1);
+  --shadow:rgba(168,78,98,.14);
+}
+
+/* ── SCROLL & MOTION ─────────────────────────── */
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+
+/* ── BASE ─────────────────────────────────────── */
+body{
+  background:var(--white);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  line-height:1;
+}
+
+/* ── CURSOR — only on fine pointer devices ─────── */
+@media(pointer:fine){
+  body{cursor:none}
+  .cur{
+    width:8px;height:8px;
+    background:var(--deep);
+    border-radius:50%;
+    position:fixed;top:0;left:0;
+    pointer-events:none;z-index:9999;
+    transition:transform .08s,opacity .2s;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #fde8ed 0%, #fcd3e0 40%, #f9b8ce 70%, #f4a0be 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    overflow: hidden;
-    position: relative;
+  .cur-r{
+    width:32px;height:32px;
+    border:1px solid var(--petal);
+    border-radius:50%;
+    position:fixed;top:0;left:0;
+    pointer-events:none;z-index:9998;
   }
+  a:hover ~ .cur, button:hover ~ .cur{transform:scale(2.5)}
+}
+@media(pointer:coarse){
+  .cur,.cur-r{display:none}
+}
 
-  /* Falling hearts canvas */
-  #hearts-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ── FOCUS VISIBLE ───────────────────────────── */
+a:focus-visible,button:focus-visible{
+  outline:2px solid var(--deep);
+  outline-offset:3px;
+  border-radius:2px;
+}
 
-  /* Glass card */
-  .card {
-    position: relative;
-    z-index: 10;
-    background: rgba(255, 245, 247, 0.55);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1.5px solid rgba(255, 182, 203, 0.6);
-    border-radius: 32px;
-    padding: 60px 70px;
-    text-align: center;
-    box-shadow:
-      0 8px 40px rgba(192, 68, 106, 0.15),
-      0 2px 8px rgba(232, 130, 154, 0.2),
-      inset 0 1px 0 rgba(255,255,255,0.7);
-    max-width: 480px;
-    width: 90vw;
-    animation: floatIn 1s cubic-bezier(.23,1,.32,1) both;
-  }
+/* ══════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;width:100%;z-index:500;
+  padding:32px 72px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:padding .45s cubic-bezier(.4,0,.2,1),
+             background .45s cubic-bezier(.4,0,.2,1),
+             border-color .45s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  padding:18px 72px;
+  background:rgba(253,251,249,.94);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom-color:var(--border);
+}
+.logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;font-weight:600;letter-spacing:.07em;
+  color:var(--ink);text-decoration:none;
+  display:flex;align-items:center;gap:6px;
+}
+.logo-accent{color:var(--deep)}
+.nav-links{display:flex;gap:44px;list-style:none}
+.nav-links a{
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  transition:color .25s;
+}
+.nav-links a:hover{color:var(--deep)}
+.nav-cta{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  color:var(--white);background:var(--deep);
+  padding:10px 28px;border-radius:40px;
+  text-decoration:none;
+  transition:background .25s,box-shadow .25s,transform .25s;
+  box-shadow:0 4px 20px var(--shadow);
+}
+.nav-cta:hover{background:var(--ink);box-shadow:0 6px 28px rgba(36,19,24,.2);transform:translateY(-1px)}
 
-  @keyframes floatIn {
-    from { opacity: 0; transform: translateY(40px) scale(0.95); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:52% 48%;
+  position:relative;
+  background:var(--white);
+}
 
-  .big-emoji {
-    font-size: 3.5rem;
-    display: block;
-    margin-bottom: 20px;
-    animation: pulse 2s ease-in-out infinite;
-  }
+/* Single soft radial wash — replaces 3 blobs */
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 75% at 75% 50%, rgba(232,184,184,.28) 0%, transparent 68%);
+  pointer-events:none;
+}
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.12); }
-  }
+/* ── Left ─── */
+.hero-left{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:160px 72px 100px 72px;
+}
+.hero-eyebrow{
+  font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--deep);margin-bottom:32px;
+  display:flex;align-items:center;gap:14px;
+  opacity:0;animation:up .8s .05s forwards;
+}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--deep)}
+.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.8rem,6.5vw,7.5rem);
+  font-weight:300;line-height:.92;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:6px;
+  opacity:0;animation:up .8s .18s forwards;
+}
+.hero-name-2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.8rem,6.5vw,7.5rem);
+  font-weight:700;font-style:italic;line-height:.92;letter-spacing:-.02em;
+  color:var(--deep);margin-bottom:48px;
+  opacity:0;animation:up .8s .28s forwards;
+}
+.hero-desc{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;font-style:italic;line-height:1.8;
+  color:var(--muted);max-width:400px;margin-bottom:52px;
+  opacity:0;animation:up .8s .42s forwards;
+}
+.hero-desc em{font-style:normal;color:var(--ink);font-weight:600}
+.hero-ctas{
+  display:flex;gap:20px;align-items:center;
+  opacity:0;animation:up .8s .55s forwards;
+}
+.btn-primary{
+  background:var(--deep);color:var(--white);
+  padding:14px 40px;border-radius:40px;
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  text-decoration:none;display:inline-block;
+  box-shadow:0 6px 32px var(--shadow);
+  transition:background .25s,box-shadow .25s,transform .25s;
+}
+.btn-primary:hover{background:var(--ink);box-shadow:0 10px 40px rgba(36,19,24,.18);transform:translateY(-2px)}
+.btn-secondary{
+  color:var(--muted);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;display:flex;align-items:center;gap:10px;
+  transition:color .25s;
+}
+.btn-secondary:hover{color:var(--deep)}
+.btn-secondary .circle{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--petal);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;
+  transition:background .25s,border-color .25s;
+}
+.btn-secondary:hover .circle{background:var(--rose);border-color:var(--dusty)}
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: 10px;
-    font-weight: 700;
-  }
+/* Stats row */
+.hero-stats{
+  display:flex;gap:0;margin-top:64px;
+  opacity:0;animation:up .8s .7s forwards;
+}
+.stat-item{
+  padding-right:32px;margin-right:32px;
+  border-right:1px solid var(--border);
+}
+.stat-item:last-child{border-right:none;padding-right:0;margin-right:0}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;font-weight:700;color:var(--deep);line-height:1;margin-bottom:4px;
+}
+.stat-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
-  .subtitle {
-    font-size: 1.1rem;
-    color: var(--rose);
-    font-style: italic;
-    font-weight: 300;
-    margin-bottom: 44px;
-    letter-spacing: 0.02em;
-  }
+/* ── Right: Photo ─── */
+.hero-right{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  padding:120px 64px 80px 24px;
+}
+/* Single soft circle behind photo */
+.hero-right::before{
+  content:'';
+  position:absolute;
+  width:460px;height:460px;
+  background:radial-gradient(circle, var(--rose) 0%, transparent 70%);
+  border-radius:50%;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  z-index:0;opacity:.6;
+}
+.photo-wrap{
+  position:relative;z-index:1;
+  width:360px;
+}
+.photo-main{
+  width:100%;aspect-ratio:3/4;
+  background:linear-gradient(150deg, var(--rose) 0%, var(--petal) 100%);
+  border-radius:12px 56px 12px 56px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  box-shadow:0 24px 64px rgba(168,78,98,.16),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.photo-dashed-border{
+  position:absolute;inset:10px;
+  border:1.5px dashed rgba(255,255,255,.4);
+  border-radius:8px 48px 8px 48px;
+  pointer-events:none;
+}
+.photo-icon{font-size:2.8rem;opacity:.3}
+.photo-hint{text-align:center}
+.photo-hint strong{
+  display:block;font-family:'Cormorant Garamond',serif;
+  font-size:1rem;font-weight:600;
+  color:rgba(36,19,24,.5);margin-bottom:5px;
+}
+.photo-hint span{
+  font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(36,19,24,.3);
+}
 
-  .buttons {
-    display: flex;
-    gap: 18px;
-    justify-content: center;
-  }
+/* ONE floating card — experience badge */
+.badge{
+  position:absolute;
+  bottom:-16px;left:-36px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 22px;
+  box-shadow:0 8px 32px rgba(168,78,98,.1);
+}
+.badge-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;font-weight:700;color:var(--deep);line-height:1;
+}
+.badge-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 
-  .btn {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    padding: 16px 48px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.18s cubic-bezier(.23,1,.32,1), box-shadow 0.18s;
-    letter-spacing: 0.05em;
-    position: relative;
-    overflow: hidden;
-  }
+/* ══════════════════════════════════════════════
+   SOCIAL PROOF STRIP
+══════════════════════════════════════════════ */
+.proof-strip{
+  background:var(--blush);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:40px 72px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:40px;
+}
+.proof-label{
+  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;flex-shrink:0;
+}
+.proof-logos{
+  display:flex;align-items:center;gap:40px;flex-wrap:wrap;
+}
+.proof-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;font-weight:600;letter-spacing:.04em;
+  color:var(--petal);
+  transition:color .25s;
+}
+.proof-logo:hover{color:var(--dusty)}
 
-  .btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: rgba(255,255,255,0.15);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
+/* ══════════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════════ */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--border);
+}
+.sb-item{
+  padding:48px 56px;
+  border-right:1px solid var(--border);
+  transition:background .3s;
+}
+.sb-item:last-child{border-right:none}
+.sb-item:hover{background:var(--blush)}
+.sb-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;font-weight:700;color:var(--deep);
+  line-height:1;margin-bottom:8px;
+}
+.sb-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
-  .btn:hover::after { opacity: 1; }
+/* ══════════════════════════════════════════════
+   ABOUT
+══════════════════════════════════════════════ */
+.about{
+  padding:128px 72px;
+  background:var(--blush);
+}
+.about-inner{
+  max-width:1240px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:96px;align-items:start;
+}
+.eyebrow{
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--deep);margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--deep);flex-shrink:0}
+h2.serif{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,3.2vw,3.4rem);
+  font-weight:400;line-height:1.1;
+  color:var(--ink);margin-bottom:40px;
+}
+h2.serif em{font-style:italic;color:var(--deep)}
 
-  .btn:hover {
-    transform: translateY(-3px) scale(1.04);
-  }
+/* Photo grid */
+.photo-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.pg{
+  background:linear-gradient(150deg,var(--rose),var(--petal));
+  border-radius:10px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:24px 16px;aspect-ratio:2/3;
+  box-shadow:0 6px 24px rgba(168,78,98,.08);
+  transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s;
+}
+.pg:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(168,78,98,.15)}
+.pg.wide{grid-column:1/-1;aspect-ratio:16/6}
+.pg-icon{font-size:1.6rem;opacity:.25}
+.pg-txt{text-align:center}
+.pg-txt strong{
+  display:block;font-family:'Cormorant Garamond',serif;
+  font-size:.9rem;font-weight:600;
+  color:rgba(36,19,24,.45);margin-bottom:4px;
+}
+.pg-txt span{font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(36,19,24,.28)}
 
-  .btn:active {
-    transform: translateY(0) scale(0.98);
-  }
+/* Right col */
+.about-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;font-weight:300;font-style:italic;line-height:1.7;
+  color:var(--ink);
+  padding-left:24px;border-left:2px solid var(--petal);
+  margin-bottom:36px;
+}
+.about-quote em{font-style:normal;color:var(--deep);font-weight:600}
+.about-p{font-size:.88rem;line-height:1.9;color:var(--muted);margin-bottom:18px}
+.skills{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  margin-top:44px;background:var(--border);
+  border:1px solid var(--border);border-radius:10px;overflow:hidden;
+}
+.skill{
+  background:var(--white);padding:22px 24px;
+  transition:background .25s;
+}
+.skill:hover{background:var(--blush)}
+.skill h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:6px;
+}
+.skill p{font-size:.76rem;color:var(--muted);line-height:1.6}
 
-  .btn-yes {
-    background: linear-gradient(135deg, #e8829a, #c0446a);
-    color: #fff;
-    box-shadow: 0 6px 24px rgba(192, 68, 106, 0.4), 0 2px 6px rgba(192,68,106,0.2);
-  }
+/* ══════════════════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════════════════ */
+.testimonials{
+  padding:128px 72px;
+  background:var(--white);
+}
+.testi-header{
+  max-width:1240px;margin:0 auto 64px;
+  display:flex;align-items:end;justify-content:space-between;
+}
+.testi-grid{
+  max-width:1240px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.testi-card{
+  background:var(--blush);
+  border:1px solid var(--border);
+  border-radius:14px;padding:36px 32px;
+  transition:transform .3s,box-shadow .3s;
+}
+.testi-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(168,78,98,.09)}
+.testi-stars{color:var(--dusty);letter-spacing:3px;font-size:.85rem;margin-bottom:18px}
+.testi-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;font-style:italic;line-height:1.7;
+  color:var(--ink);margin-bottom:24px;
+}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--petal),var(--deep));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.9rem;font-weight:700;color:var(--white);
+  flex-shrink:0;
+}
+.testi-name{font-size:.82rem;font-weight:500;color:var(--ink)}
+.testi-role{font-size:.7rem;color:var(--muted)}
+.testi-more{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  transition:color .25s;
+}
+.testi-more:hover{color:var(--deep)}
 
-  .btn-yes:hover {
-    box-shadow: 0 12px 32px rgba(192, 68, 106, 0.5), 0 4px 10px rgba(192,68,106,0.3);
-  }
+/* ══════════════════════════════════════════════
+   SERVICES
+══════════════════════════════════════════════ */
+.services{
+  padding:128px 72px;
+  background:var(--blush);
+  border-top:1px solid var(--border);
+}
+.section-header{
+  max-width:1240px;margin:0 auto 72px;
+  display:flex;align-items:end;justify-content:space-between;
+}
+.section-header p{
+  max-width:300px;font-size:.84rem;line-height:1.8;color:var(--muted);text-align:right;
+}
+.svc-grid{
+  max-width:1240px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.svc{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;padding:44px 36px;
+  position:relative;overflow:hidden;
+  transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .35s;
+}
+.svc::after{
+  content:'';position:absolute;top:0;left:0;
+  width:0;height:2px;background:var(--deep);
+  transition:width .45s cubic-bezier(.4,0,.2,1);
+}
+.svc:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(168,78,98,.1);border-color:var(--petal)}
+.svc:hover::after{width:100%}
+.svc-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;font-weight:300;color:rgba(168,78,98,.1);
+  line-height:1;margin-bottom:20px;user-select:none;
+}
+.svc h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.35rem;font-weight:600;color:var(--ink);
+  margin-bottom:12px;line-height:1.2;
+}
+.svc p{font-size:.82rem;line-height:1.85;color:var(--muted);margin-bottom:28px}
+.svc-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;font-weight:600;color:var(--deep);
+}
+.svc-price small{
+  font-family:'DM Sans',sans-serif;
+  font-size:.6rem;letter-spacing:.08em;color:var(--muted);margin-left:6px;font-weight:300;
+}
 
-  .btn-no {
-    background: rgba(255, 245, 247, 0.8);
-    color: var(--deep);
-    border: 2px solid rgba(192, 68, 106, 0.35);
-    box-shadow: 0 4px 16px rgba(192, 68, 106, 0.1);
-  }
+/* ══════════════════════════════════════════════
+   PROCESS
+══════════════════════════════════════════════ */
+.process{
+  padding:128px 72px;
+  background:var(--white);
+}
+.process-inner{max-width:1240px;margin:0 auto}
+.process-top{
+  display:grid;grid-template-columns:1fr 1fr;gap:72px;
+  align-items:center;margin-bottom:88px;
+}
+.process-top p{font-size:.88rem;line-height:1.9;color:var(--muted)}
+.p-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  position:relative;
+}
+.p-steps::before{
+  content:'';position:absolute;
+  top:28px;left:56px;right:56px;height:1px;
+  background:linear-gradient(to right,var(--petal),var(--dusty),var(--petal));
+  pointer-events:none;
+}
+.p-step{text-align:center;padding:0 20px;position:relative;z-index:1}
+.p-dot{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--white);border:1px solid var(--petal);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;color:var(--deep);
+  transition:background .3s,border-color .3s,transform .3s;
+  box-shadow:0 2px 16px rgba(168,78,98,.08);
+}
+.p-step:hover .p-dot{background:var(--deep);color:var(--white);border-color:var(--deep);transform:scale(1.08)}
+.p-step h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-weight:600;color:var(--ink);margin-bottom:10px;
+}
+.p-step p{font-size:.76rem;color:var(--muted);line-height:1.75}
 
-  .btn-no:hover {
-    background: rgba(255, 230, 238, 0.9);
-    box-shadow: 0 8px 24px rgba(192, 68, 106, 0.18);
-  }
+/* ══════════════════════════════════════════════
+   CTA — concrete conversion copy
+══════════════════════════════════════════════ */
+.cta{
+  padding:148px 72px;
+  background:linear-gradient(155deg, var(--deep) 0%, #7E3648 100%);
+  text-align:center;position:relative;overflow:hidden;
+}
+/* Subtle single radial highlight — no text BG */
+.cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(255,210,210,.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+.cta-ey{
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(253,251,249,.45);margin-bottom:28px;
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  position:relative;z-index:1;
+}
+.cta-ey::before,.cta-ey::after{content:'';width:28px;height:1px;background:rgba(253,251,249,.2)}
+.cta h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.8rem,6vw,6.5rem);
+  font-weight:300;line-height:1.02;letter-spacing:-.02em;
+  color:var(--white);margin-bottom:18px;
+  position:relative;z-index:1;
+}
+.cta h2 em{font-style:italic;color:rgba(232,184,184,.9)}
+.cta-sub{
+  font-size:.92rem;color:rgba(253,251,249,.55);
+  max-width:420px;margin:0 auto 56px;line-height:1.85;
+  position:relative;z-index:1;
+}
+.cta-btns{
+  display:flex;gap:14px;justify-content:center;
+  margin-bottom:72px;position:relative;z-index:1;
+}
+.btn-white{
+  background:var(--white);color:var(--deep);
+  padding:14px 42px;border-radius:40px;
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  text-decoration:none;
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 6px 28px rgba(0,0,0,.12);
+}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.btn-ghost-w{
+  border:1px solid rgba(255,255,255,.25);color:var(--white);
+  padding:14px 42px;border-radius:40px;
+  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:400;
+  text-decoration:none;
+  transition:background .25s,border-color .25s;
+}
+.btn-ghost-w:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.45)}
+.cta-contacts{
+  display:flex;justify-content:center;gap:56px;
+  padding-top:56px;border-top:1px solid rgba(255,255,255,.1);
+  position:relative;z-index:1;
+}
+.cc{text-align:center}
+.cc-label{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(253,251,249,.35);margin-bottom:8px}
+.cc-val{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:rgba(253,251,249,.8)}
 
-  /* Error toast */
-  .toast {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: #fff0f3;
-    border: 1.5px solid #e8829a;
-    border-radius: 18px;
-    padding: 14px 28px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    color: #c0446a;
-    font-style: italic;
-    box-shadow: 0 8px 30px rgba(192,68,106,0.2);
-    z-index: 200;
-    opacity: 0;
-    transition: transform 0.4s cubic-bezier(.23,1,.32,1), opacity 0.4s;
-    white-space: nowrap;
-  }
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{
+  background:var(--ink);
+  padding:40px 72px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.foot-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;font-weight:600;letter-spacing:.06em;
+  color:var(--white);text-decoration:none;
+}
+.foot-logo span{color:var(--petal)}
+footer p{font-size:.6rem;letter-spacing:.1em;color:rgba(253,251,249,.22)}
+.foot-links{display:flex;gap:28px}
+.foot-links a{
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(253,251,249,.28);text-decoration:none;transition:color .25s;
+}
+.foot-links a:hover{color:var(--petal)}
 
-  /* Phone number reveal */
-  .phone-reveal {
-    margin-top: 24px;
-    background: rgba(255,245,247,0.9);
-    border: 1.5px solid rgba(232,130,154,0.5);
-    border-radius: 20px;
-    padding: 18px 32px;
-    display: inline-block;
-    animation: popIn 0.5s cubic-bezier(.23,1,.32,1) both;
-  }
+/* ══════════════════════════════════════════════
+   REVEAL ANIMATION
+══════════════════════════════════════════════ */
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.7); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  .phone-label {
-    font-size: 0.85rem;
-    color: var(--rose);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .phone-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    color: var(--deep);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-  }
-
-  /* Response message */
-  .message {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 16px;
-    animation: fadeIn 0.5s ease both;
-  }
-
-  .message.show { display: flex; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  .message-card {
-    background: rgba(255, 245, 247, 0.85);
-    backdrop-filter: blur(24px);
-    border-radius: 32px;
-    padding: 50px 60px;
-    text-align: center;
-    border: 1.5px solid rgba(255,182,203,0.6);
-    box-shadow: 0 12px 50px rgba(192, 68, 106, 0.2);
-  }
-
-  .message-card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-
-  .message-card p {
-    font-size: 1.15rem;
-    color: var(--rose);
-    font-style: italic;
-  }
-
-  /* Decorative dots */
-  .dots {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
-
-  .dot {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 182, 203, 0.25);
-  }
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:1080px){
+  nav{padding:22px 28px}
+  nav.scrolled{padding:14px 28px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-left{padding:110px 28px 56px}
+  .hero-stats{position:static;margin-top:44px}
+  .hero-right{min-height:380px;padding:32px 28px 56px}
+  .hero-right::before{width:300px;height:300px}
+  .photo-wrap{width:240px}
+  .badge{left:-8px;bottom:-8px}
+  .proof-strip{flex-direction:column;align-items:start;padding:32px 28px;gap:20px}
+  .stats-bar{grid-template-columns:1fr 1fr}
+  .sb-item{padding:36px 28px}
+  .sb-item:nth-child(2){border-right:none}
+  .about{padding:88px 28px}
+  .about-inner{grid-template-columns:1fr;gap:56px}
+  .testimonials,.services,.process{padding:88px 28px}
+  .testi-header{flex-direction:column;gap:16px;align-items:start;margin-bottom:44px}
+  .testi-grid{grid-template-columns:1fr}
+  .section-header{flex-direction:column;gap:14px;align-items:start;margin-bottom:52px}
+  .section-header p{text-align:left}
+  .svc-grid{grid-template-columns:1fr}
+  .process-top{grid-template-columns:1fr;gap:32px;margin-bottom:60px}
+  .p-steps{grid-template-columns:1fr 1fr;gap:44px}
+  .p-steps::before{display:none}
+  .cta{padding:96px 28px}
+  .cta-contacts{flex-direction:column;gap:28px;align-items:center}
+  .cta-btns{flex-direction:column;align-items:center}
+  footer{flex-direction:column;gap:18px;text-align:center;padding:32px 28px}
+  .foot-links{flex-wrap:wrap;justify-content:center}
+}
 </style>
 </head>
 <body>
 
-<canvas id="hearts-canvas"></canvas>
+<!-- Cursor — only rendered, JS attaches only on fine pointer -->
+<div class="cur" id="cur" aria-hidden="true"></div>
+<div class="cur-r" id="curr" aria-hidden="true"></div>
 
-<div class="dots" id="dots"></div>
+<!-- ══ NAV ══════════════════════════════════════ -->
+<nav id="nav" role="navigation" aria-label="Основная навигация">
+  <a href="#" class="logo">Тоғжан&nbsp;<span class="logo-accent">Алтынбек</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">О себе</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#testimonials">Отзывы</a></li>
+    <li><a href="#process">Процесс</a></li>
+    <li><a href="#contact">Контакт</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Консультация</a>
+</nav>
 
-<div class="card" id="mainCard">
-  <span class="big-emoji">💝</span>
-  <h1>Ты мне нравишься</h1>
-  <p class="subtitle">Скажи мне честно...</p>
-  <div class="buttons">
-    <button class="btn btn-yes" onclick="answer('yes')">Да 💕</button>
-    <button class="btn btn-no" onclick="answer('no')">Нет</button>
-  </div>
-</div>
-
-<div class="message" id="yesMsg">
-  <div class="message-card">
-    <div style="font-size:3.5rem; margin-bottom:16px;">🥰💗</div>
-    <h2>Я так и знал!</h2>
-    <p>Это лучший день в моей жизни...</p>
-    <div class="phone-reveal">
-      <div class="phone-label">📱 Мой номер</div>
-      <div class="phone-number">+7 (999) 123-45-67</div>
+<!-- ══ HERO ══════════════════════════════════════ -->
+<section class="hero" aria-label="Главный экран">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Маркетолог &amp; Стратег</div>
+    <div class="hero-name">Тоғжан</div>
+    <div class="hero-name-2">Алтынбек</div>
+    <p class="hero-desc">
+      За 30 минут найдём, где ваш маркетинг
+      <em>теряет деньги</em> — и как это исправить.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Бесплатная консультация</a>
+      <a href="#services" class="btn-secondary">
+        <span class="circle" aria-hidden="true">→</span>
+        Услуги
+      </a>
+    </div>
+    <div class="hero-stats" aria-label="Ключевые цифры">
+      <div class="stat-item">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Лет опыта</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Проектов</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">×3.4</div>
+        <div class="stat-label">Средний ROI</div>
+      </div>
     </div>
   </div>
+
+  <div class="hero-right">
+    <div class="photo-wrap">
+      <div class="photo-main" role="img" aria-label="Фото Тоғжан Алтынбек">
+        <div class="photo-dashed-border" aria-hidden="true"></div>
+        <div class="photo-icon" aria-hidden="true">📷</div>
+        <div class="photo-hint">
+          <strong>Фото Тоғжан</strong>
+          <img src="12.jpg" alt="Фото Тоғжан">
+        </div>
+      </div>
+      <div class="badge" aria-hidden="true">
+        <div class="badge-num">98%</div>
+        <div class="badge-label">Клиентов&nbsp;возвращаются</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOCIAL PROOF STRIP ════════════════════════ -->
+<div class="proof-strip" aria-label="Компании, с которыми работала">
+  <span class="proof-label">Работала с</span>
+  <div class="proof-logos">
+    <span class="proof-logo">Магнум</span>
+    <span class="proof-logo">Kaspi</span>
+    <span class="proof-logo">Trustme</span>
+    <span class="proof-logo">Kolesa.kz</span>
+    <span class="proof-logo">Air Astana</span>
+    <span class="proof-logo">Halyk Bank</span>
+  </div>
 </div>
 
-<div class="toast" id="errorToast">⚠️ Ошибка: этот вариант недоступен 💕</div>
+<!-- ══ STATS BAR ══════════════════════════════════ -->
+<div class="stats-bar" role="list" aria-label="Статистика">
+  <div class="sb-item reveal" role="listitem">
+    <div class="sb-num">8+</div>
+    <div class="sb-label">Лет в маркетинге</div>
+  </div>
+  <div class="sb-item reveal d1" role="listitem">
+    <div class="sb-num">120+</div>
+    <div class="sb-label">Завершённых проектов</div>
+  </div>
+  <div class="sb-item reveal d2" role="listitem">
+    <div class="sb-num">×3.4</div>
+    <div class="sb-label">Средний рост ROI</div>
+  </div>
+  <div class="sb-item reveal d3" role="listitem">
+    <div class="sb-num">98%</div>
+    <div class="sb-label">Клиентов возвращаются</div>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══════════════════════════════════════ -->
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="about-inner">
+    <div>
+      <div class="eyebrow reveal">О себе</div>
+      <h2 class="serif reveal" id="about-title">Маркетинг —<br>это <em>наука,</em><br>а не интуиция</h2>
+      <div class="photo-grid reveal">
+        <div class="pg" role="img" aria-label="Фото 1 — добавьте фотографию">
+          <div class="pg-icon" aria-hidden="true">📸</div>
+          <div class="pg-txt"><strong>Фото 1</strong><img src="19+.png" alt="Фото Тоғжан"></div>
+        </div>
+        <div class="pg" role="img" >
+          <div class="pg-icon" aria-hidden="true">📸</div>
+          <div class="pg-txt"><strong></strong><img src="18.png" alt="Фото Тоғжан"></div>
+        </div>
+        
+      </div>
+    </div>
+    <div>
+      <blockquote class="about-quote reveal">
+        Помогаю компаниям выстроить маркетинг, который работает <em>системно и предсказуемо.</em>
+      </blockquote>
+      <p class="about-p reveal">С 2016 года в digital-маркетинге. Реализовала более 120 проектов — от стартапов до крупных корпораций. Каждый раз: индивидуальный подход и стратегия, основанная на данных.</p>
+      <p class="about-p reveal">Не верю в шаблоны. Верю в исследования, тесты и цифры. Поэтому 98% клиентов возвращаются и рекомендуют меня другим.</p>
+      <div class="skills reveal">
+        <div class="skill">
+          <h4>Стратегия</h4>
+          <p>Полный аудит и роадмап с чёткими KPI</p>
+        </div>
+        <div class="skill">
+          <h4>Performance</h4>
+          <p>Таргет и контекст — каждый тенге под контролем</p>
+        </div>
+        <div class="skill">
+          <h4>SMM & Контент</h4>
+          <p>Соцсети, которые строят бренд и продают</p>
+        </div>
+        <div class="skill">
+          <h4>Аналитика</h4>
+          <p>Сквозная аналитика, A/B-тесты, дашборды</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ═══════════════════════════════ -->
+<section class="testimonials" id="testimonials" aria-labelledby="testi-title">
+  <div class="testi-header reveal">
+    <div>
+      <div class="eyebrow">Отзывы</div>
+      <h2 class="serif" id="testi-title" style="margin-bottom:0">Что говорят <em>клиенты</em></h2>
+    </div>
+    <a href="#contact" class="testi-more">Стать следующим <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars" aria-label="5 из 5 звёзд">★★★★★</div>
+      <p class="testi-text">«За 3 месяца количество заявок выросло в 2.8 раза при том же бюджете. Это не магия — это системный подход Тоғжан.»</p>
+      <div class="testi-author">
+        <div class="testi-avatar" aria-hidden="true">АС</div>
+        <div>
+          <div class="testi-name">Айгерим Сейтова</div>
+          <div class="testi-role">CEO, Beauty Studio Almaty</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal d1">
+      <div class="testi-stars" aria-label="5 из 5 звёзд">★★★★★</div>
+      <p class="testi-text">«Наконец-то маркетолог, говорящий языком цифр. Стоимость лида снизилась с 8 000 до 2 400 ₸ — каждый тенге виден в отчёте.»</p>
+      <div class="testi-author">
+        <div class="testi-avatar" aria-hidden="true">ДК</div>
+        <div>
+          <div class="testi-name">Данияр Касымов</div>
+          <div class="testi-role">Founder, TechStart KZ</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal d2">
+      <div class="testi-stars" aria-label="5 из 5 звёзд">★★★★★</div>
+      <p class="testi-text">«Ушла с консультации с конкретным планом. Никакой воды — только реальные действия. Через 4 месяца Instagram даёт 30% продаж.»</p>
+      <div class="testi-author">
+        <div class="testi-avatar" aria-hidden="true">МА</div>
+        <div>
+          <div class="testi-name">Малика Ахметова</div>
+          <div class="testi-role">Владелица бутика Selena</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ════════════════════════════════════ -->
+<section class="services" id="services" aria-labelledby="svc-title">
+  <div class="section-header reveal">
+    <div>
+      <div class="eyebrow">Услуги</div>
+      <h2 class="serif" id="svc-title" style="margin-bottom:0">Чем я <em>занимаюсь</em></h2>
+    </div>
+    <p>Выберите формат — работаю с бизнесами любого масштаба.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc reveal">
+      <div class="svc-num" aria-hidden="true">01</div>
+      <h3>Маркетинговая стратегия</h3>
+      <p>Полный аудит, анализ конкурентов, позиционирование и роадмап на 6–12 месяцев.</p>
+      <div class="svc-price">от 150 000 ₸ <small>/ проект</small></div>
+    </div>
+    <div class="svc reveal d1">
+      <div class="svc-num" aria-hidden="true">02</div>
+      <h3>Таргетированная реклама</h3>
+      <p>Instagram, Facebook, TikTok, Google. Запуск, тестирование и оптимизация кампаний.</p>
+      <div class="svc-price">от 80 000 ₸ <small>/ мес</small></div>
+    </div>
+    <div class="svc reveal d2">
+      <div class="svc-num" aria-hidden="true">03</div>
+      <h3>SMM & Контент</h3>
+      <p>Контент-стратегия, публикации, управление соцсетями. Ваш бренд станет живым и продающим.</p>
+      <div class="svc-price">от 60 000 ₸ <small>/ мес</small></div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-num" aria-hidden="true">04</div>
+      <h3>SEO-продвижение</h3>
+      <p>Органический трафик, который работает годами. Техническая оптимизация и ссылочный профиль.</p>
+      <div class="svc-price">от 70 000 ₸ <small>/ мес</small></div>
+    </div>
+    <div class="svc reveal d1">
+      <div class="svc-num" aria-hidden="true">05</div>
+      <h3>Маркетинговый аудит</h3>
+      <p>Что работает, где утечка бюджета и как исправить — конкретный план за 2 недели.</p>
+      <div class="svc-price">от 50 000 ₸ <small>/ проект</small></div>
+    </div>
+    <div class="svc reveal d2">
+      <div class="svc-num" aria-hidden="true">06</div>
+      <h3>Консультация 1:1</h3>
+      <p>Разбираю ситуацию, отвечаю на вопросы и даю конкретный план действий за 60 минут.</p>
+      <div class="svc-price">15 000 ₸ <small>/ час</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ═════════════════════════════════════ -->
+<section class="process" id="process" aria-labelledby="process-title">
+  <div class="process-inner">
+    <div class="process-top reveal">
+      <div>
+        <div class="eyebrow">Процесс</div>
+        <h2 class="serif" id="process-title" style="margin-bottom:0">Просто.<br><em>Прозрачно.</em></h2>
+      </div>
+      <p>Каждый проект — чёткий процесс с понятными шагами. Вы знаете, что происходит на каждом этапе, и видите результат в цифрах.</p>
+    </div>
+    <div class="p-steps">
+      <div class="p-step reveal">
+        <div class="p-dot" aria-hidden="true">I</div>
+        <h3>Знакомство</h3>
+        <p>Бесплатная 30-минутная встреча. Изучаю ваш бизнес и задачи — без обязательств.</p>
+      </div>
+      <div class="p-step reveal d1">
+        <div class="p-dot" aria-hidden="true">II</div>
+        <h3>Аудит</h3>
+        <p>Исследую рынок, конкурентов и текущий маркетинг. Нахожу точки роста.</p>
+      </div>
+      <div class="p-step reveal d2">
+        <div class="p-dot" aria-hidden="true">III</div>
+        <h3>Стратегия</h3>
+        <p>Формирую план с KPI, бюджетами и сроками. Вы видите каждый шаг заранее.</p>
+      </div>
+      <div class="p-step reveal d3">
+        <div class="p-dot" aria-hidden="true">IV</div>
+        <h3>Результат</h3>
+        <p>Запускаем, тестируем, оптимизируем. Еженедельные отчёты. Полная прозрачность.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════ -->
+<section class="cta" id="contact" aria-labelledby="cta-title">
+  <div class="cta-ey reveal">Начать сотрудничество</div>
+  <h2 class="reveal" id="cta-title">
+    Покажу, где ваш<br>маркетинг <em>теряет деньги</em>
+  </h2>
+  <p class="cta-sub reveal">За 30 минут найдём точки роста вашего бизнеса. Первая консультация — бесплатно.</p>
+  <div class="cta-btns reveal">
+    <a href="https://wa.me/77073155462" class="btn-white">Написать в WhatsApp</a>
+    <a href="https://t.me/tfrznt" class="btn-ghost-w">Telegram</a>
+  </div>
+  <div class="cta-contacts reveal">
+
+    <div class="cc">
+      <div class="cc-label">Телефон</div>
+      <div class="cc-val">+7 707 315 5462</div>
+    </div>
+    <div class="cc">
+      <div class="cc-label">Город</div>
+      <div class="cc-val">Алматы, Казахстан</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════ -->
+<footer>
+  <a href="#" class="foot-logo">Тоғжан&nbsp;<span>Алтынбек</span></a>
+  <p>© 2025 Тоғжан Алтынбек. Все права защищены.</p>
+  <div class="foot-links">
+    <a href="#about">О себе</a>
+    <a href="#services">Услуги</a>
+    <a href="#testimonials">Отзывы</a>
+    <a href="#contact">Контакт</a>
+  </div>
+</footer>
 
 <script>
-  // === Falling Hearts ===
-  const canvas = document.getElementById('hearts-canvas');
-  const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// ── Cursor — only activate on fine pointer ──────
+if(window.matchMedia('(pointer:fine)').matches){
+  const cur=document.getElementById('cur');
+  const curr=document.getElementById('curr');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    cur.style.transform=`translate(${mx-4}px,${my-4}px)`;
   });
+  (function tick(){
+    rx+=(mx-rx-16)*.1; ry+=(my-ry-16)*.1;
+    curr.style.transform=`translate(${rx}px,${ry}px)`;
+    requestAnimationFrame(tick);
+  })();
+}
 
-  const EMOJIS = ['💕','💗','💓','💖','💘','❤️','🩷','💝','💞'];
+// ── Nav scrolled state ───────────────────────────
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>50),{passive:true});
 
-  class Heart {
-    constructor() { this.reset(true); }
-
-    reset(initial = false) {
-      this.x = Math.random() * canvas.width;
-      this.y = initial ? Math.random() * canvas.height : -60;
-      this.size = 18 + Math.random() * 28;
-      this.speed = 0.6 + Math.random() * 1.4;
-      this.drift = (Math.random() - 0.5) * 0.8;
-      this.rotation = (Math.random() - 0.5) * 0.3;
-      this.rotSpeed = (Math.random() - 0.5) * 0.02;
-      this.opacity = 0.4 + Math.random() * 0.55;
-      this.emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-      this.wobble = Math.random() * Math.PI * 2;
-      this.wobbleSpeed = 0.02 + Math.random() * 0.02;
-    }
-
-    update() {
-      this.y += this.speed;
-      this.wobble += this.wobbleSpeed;
-      this.x += this.drift + Math.sin(this.wobble) * 0.5;
-      this.rotation += this.rotSpeed;
-      if (this.y > canvas.height + 80) this.reset();
-    }
-
-    draw() {
-      ctx.save();
-      ctx.globalAlpha = this.opacity;
-      ctx.font = `${this.size}px serif`;
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(this.emoji, 0, 0);
-      ctx.restore();
-    }
-  }
-
-  const hearts = Array.from({ length: 38 }, () => new Heart());
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    hearts.forEach(h => { h.update(); h.draw(); });
-    requestAnimationFrame(animate);
-  }
-  animate();
-
-  // === Decorative blobs ===
-  const dotsEl = document.getElementById('dots');
-  for (let i = 0; i < 6; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot';
-    const s = 80 + Math.random() * 200;
-    d.style.cssText = `
-      width:${s}px; height:${s}px;
-      top:${Math.random()*100}%; left:${Math.random()*100}%;
-      transform: translate(-50%,-50%);
-    `;
-    dotsEl.appendChild(d);
-  }
-
-  // === Button logic ===
-  const noBtn = document.querySelector('.btn-no');
-  let noAttempts = 0;
-
-  const errorMessages = [
-    '⚠️ Ошибка: этот вариант недоступен 💕',
-    '🚫 Система не принимает этот ответ',
-    '❌ Неверный выбор, попробуй снова~',
-    '💔 404: Ответ "Нет" не найден',
-    '🛑 Упс! Что-то пошло не так...',
-  ];
-
-  noBtn.addEventListener('mouseover', () => {
-    const card = document.getElementById('mainCard');
-    const rect = card.getBoundingClientRect();
-    const maxX = window.innerWidth - rect.width - 20;
-    const maxY = window.innerHeight - rect.height - 20;
-    const newX = Math.max(20, Math.random() * maxX);
-    const newY = Math.max(20, Math.random() * maxY);
-    card.style.position = 'fixed';
-    card.style.left = newX + 'px';
-    card.style.top = newY + 'px';
-    card.style.transform = 'none';
-    card.style.transition = 'left 0.3s cubic-bezier(.23,1,.32,1), top 0.3s cubic-bezier(.23,1,.32,1)';
-    card.style.margin = '0';
+// ── Scroll reveal ────────────────────────────────
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add('in');
   });
-
-  noBtn.addEventListener('click', () => {
-    const toast = document.getElementById('errorToast');
-    toast.textContent = errorMessages[noAttempts % errorMessages.length];
-    noAttempts++;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2200);
-  });
-
-  function answer(choice) {
-    if (choice === 'yes') {
-      document.getElementById('mainCard').style.display = 'none';
-      document.getElementById('yesMsg').classList.add('show');
-      burst();
-    }
-  }
-
-  function burst() {
-    for (let i = 0; i < 20; i++) {
-      const h = new Heart();
-      h.y = canvas.height / 2 + (Math.random() - 0.5) * 100;
-      h.x = canvas.width / 2 + (Math.random() - 0.5) * 100;
-      h.speed = 1.5 + Math.random() * 3;
-      h.size = 28 + Math.random() * 24;
-      hearts.push(h);
-    }
-  }
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 </script>
 </body>
 </html>
